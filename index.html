@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InnovateTech Solutions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+    <style>
+      :root { /* Dark Mode */
+        --bg-color: #0a0f1f;
+        --bg-deep-color: #050810;
+        --card-color: #111827;
+        --card-deep-color: #1a2035;
+        --border-color: #2d3748;
+        --input-bg: #1f2937;
+        --text-color: #e5e7eb;
+        --text-muted: #9ca3af;
+        --accent-color-1: #6366f1;
+        --accent-color-2: #8b5cf6;
+        --accent-bg-subtle: rgba(49, 46, 129, 0.5); /* bg-indigo-900/50 */
+        --glow-follower-color: rgba(79, 70, 229, 0.15);
+        --chat-bubble-bot-bg: #374151;
+        --chat-bubble-bot-text: #ffffff;
+      }
+      
+      html.light-mode { /* Light Mode */
+        --bg-color: #f9fafb; /* gray-50 */
+        --bg-deep-color: #f3f4f6; /* gray-100 */
+        --card-color: #ffffff;
+        --card-deep-color: #f3f4f6; /* gray-100 */
+        --border-color: #e5e7eb; /* gray-200 */
+        --input-bg: #f3f4f6; /* gray-100 */
+        --text-color: #111827; /* gray-900 */
+        --text-muted: #6b7280; /* gray-500 */
+        --accent-color-1: #4f46e5; /* indigo-600 */
+        --accent-color-2: #7c3aed; /* violet-600 */
+        --accent-bg-subtle: #e0e7ff; /* indigo-100 */
+        --glow-follower-color: rgba(99, 102, 241, 0.2);
+        --chat-bubble-bot-bg: #e5e7eb; /* gray-200 */
+        --chat-bubble-bot-text: #111827; /* gray-900 */
+      }
+      
+      html {
+        scroll-behavior: smooth;
+      }
+      
+      body {
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+        transition: background-color 0.3s ease, color 0.3s ease;
+      }
+
+      /* Glowing Mouse Follower */
+      #glow-follower {
+        position: fixed;
+        width: 500px;
+        height: 500px;
+        border-radius: 50%;
+        background: radial-gradient(circle, var(--glow-follower-color), transparent 60%);
+        pointer-events: none;
+        transform: translate(-50%, -50%);
+        z-index: 0;
+        transition: opacity 0.3s, background 0.3s ease;
+      }
+
+      .gradient-text {
+        background: linear-gradient(90deg, var(--accent-color-2), var(--accent-color-1));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      
+      /* Scroll Animation Styles */
+      .animate-on-scroll {
+        opacity: 0;
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .animate-on-scroll.is-visible {
+        opacity: 1;
+        transform: none;
+      }
+      .fade-up {
+        transform: translateY(30px);
+      }
+      .slide-in-left {
+        transform: translateX(-40px);
+      }
+      .slide-in-right {
+        transform: translateX(40px);
+      }
+      
+      /* Staggering Delays */
+      .animate-on-scroll.is-visible.stagger-1 { transition-delay: 100ms; }
+      .animate-on-scroll.is-visible.stagger-2 { transition-delay: 200ms; }
+      .animate-on-scroll.is-visible.stagger-3 { transition-delay: 300ms; }
+      .animate-on-scroll.is-visible.stagger-4 { transition-delay: 400ms; }
+      .animate-on-scroll.is-visible.stagger-5 { transition-delay: 500ms; }
+      .animate-on-scroll.is-visible.stagger-6 { transition-delay: 600ms; }
+
+      /* Glowing Card Hover Effect */
+      .glowing-card {
+        position: relative;
+        background-color: var(--card-color);
+        border: 1px solid var(--border-color);
+        overflow: hidden;
+        z-index: 1;
+        transition: background-color 0.3s ease, border-color 0.3s ease;
+      }
+      .glowing-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(
+          800px circle at var(--mouse-x) var(--mouse-y),
+          rgba(139, 92, 246, 0.15),
+          transparent 40%
+        );
+        z-index: -1;
+        transition: opacity 0.3s ease;
+        opacity: 0;
+      }
+      .glowing-card:hover::before {
+        opacity: 1;
+      }
+
+      /* Client Logo Marquee Animation */
+      @keyframes infinite-scroll {
+        from { transform: translateX(0); }
+        to { transform: translateX(-100%); }
+      }
+      .animate-infinite-scroll {
+        animation: infinite-scroll 40s linear infinite;
+      }
+
+      /* Modal Animations */
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+      @keyframes scale-up {
+        from { transform: scale(0.95); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+      }
+      .animate-fade-in {
+        animation: fade-in 0.2s ease-out forwards;
+      }
+      .animate-scale-up {
+        animation: scale-up 0.2s ease-out forwards;
+      }
+      
+      /* Accessibility: Reduced Motion */
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+        #glow-follower {
+          display: none;
+        }
+        .animate-on-scroll {
+          opacity: 1;
+          transform: none;
+        }
+        .glowing-card:hover::before {
+            opacity: 0;
+        }
+        .animate-infinite-scroll {
+            animation: none;
+        }
+      }
+
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.27.0",
+    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="glow-follower"></div>
+    <div id="root"></div>
+    <div id="modal-root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
